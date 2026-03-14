@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS project;
 CREATE TABLE project (
     project_id SERIAL PRIMARY KEY,
     project_name VARCHAR(50) NOT NULL,
-    project_status enum(
+    project_status ENUM(
         'DRAFT',
         'PROPOSED',
         'APPROVED',
@@ -20,7 +20,7 @@ CREATE TABLE project (
         'CANCELLED'
     ) DEFAULT 'DRAFT',
     project_director VARCHAR(50) NOT NULL,
-    report_type enum(
+    report_type ENUM(
         'IEE',
         'EIA',
         'EHIA',
@@ -32,3 +32,5 @@ CREATE TABLE project (
     FOREIGN KEY (outsourcer_contract_email) REFERENCES outsourcer(outsourcer_contract_email),
 );
 
+DROP TABLE IF EXISTS tor_info;
+CREATE TABLE 

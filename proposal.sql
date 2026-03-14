@@ -6,7 +6,7 @@ CREATE TABLE proposal (
     fk_project_id INT NOT NULL UNIQUE,
     proposal_number VARCHAR(50) NOT NULL,
     proposal_date DATE NOT NULL,
-    proposal_status enum(
+    proposal_status ENUM(
         'DRAFT',
         'SUBMITTED',
         'UNDER_REVIEW',
