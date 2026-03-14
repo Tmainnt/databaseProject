@@ -17,6 +17,25 @@ CREATE TABLE academician (
     fk_academician_bank_account VARCHAR(50) NOT NULL,
     academician_file_storage_id INT AUTO_INCREMENT NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (fk_academician_contact_id) REFERENCES academician_contact(academician_contact_id) ON DELETE CASCADE,
+    -- continue
 );
 
+DROP TABLE IF EXISTS academician_contact;
+CREATE TABLE academician_contact (
+    academician_contact_id INT AUTO_INCREMENT PRIMARY KEY,
+    academician_email VARCHAR(100),
+    academician_phone INT(20),
+    academician_address TEXT,
+    fk_academician_emergency_contact_id INT AUTO_INCREMENT NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (fk_academician_emergency_contact_id) REFERENCES academician_emergency_contact(academician_emergency_contact_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS academician_emergency_contact;
+CREATE TABLE academician_emergency_contact (
+    academician_contact_id INT AUTO_INCREMENT PRIMARY KEY,
+    academician_eme
+);
