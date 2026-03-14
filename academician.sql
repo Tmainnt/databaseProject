@@ -19,9 +19,10 @@ CREATE TABLE academician (
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (fk_academician_contact_id) REFERENCES academician_contact(academician_contact_id) ON DELETE CASCADE,
-    FOREIGN KEY (academician_file_storage_id) REFERENCES academician_file(academician_file_storage_id) ON DELETE CASCADE,
-    /* wait */
-);
+    FOREIGN KEY (fk_academician_contract_number) REFERENCES academician_contact(academician_contract_number) ON DELETE CASCADE,
+    FOREIGN KEY (fk_academician_critizen_id) REFERENCES academician_critizen_card(academician_critizen_id) ON DELETE CASCADE,
+    FOREIGN KEY (fk_academician_bank_account) REFERENCES academician_bank_account(academician_bank_account) ON DELETE CASCADE
+); 
 
 DROP TABLE IF EXISTS academician_contact;
 CREATE TABLE academician_contact (
@@ -61,7 +62,7 @@ CREATE TABLE academician_has_a_contract (
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
     FOREIGN KEY (fk_academician_id) REFERENCES academician(academician_id) ON DELETE CASCADE,
-    FOREIGN KEY (fk_academician_contract_number) REFERENCES academician_contact(fk_academician_contract_number)
+    FOREIGN KEY (fk_academician_contract_number) REFERENCES academician_contact(academician_contract_number)
 );
 
 DROP TABLE IF EXISTS academician_work_limit;
@@ -75,15 +76,28 @@ CREATE TABLE academician_work_limit (
 
 DROP TABLE IF EXISTS academician_critizen_card;
 CREATE TABLE academician_critizen_card (
-    
+    academician_critizen_id INT(20) PRIMARY KEY NOT NULL,
+    academician_id_card_file VARCHAR(100) NOT NULL
 );
 
 DROP TABLE IF EXISTS academician_contract;
 CREATE TABLE academician_contract (
-    
+    academician_contract_number INT(20) PRIMARY KEY, -- maybe i'm gonna change data type next time.
+    academician_contract_type ENUM(
+        'FULL_TIME',
+        'PART_TIME',
+        'CONSULTANT'
+    ) NOT NULL,
+    academician_contact_start_date DATE NOT NULL,
+    academician_contact_end_date DATE NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
 DROP TABLE IF EXISTS academician_bank_account;
 CREATE TABLE academician_bank_account (
-    
+    academician_bank_account VARCHAR(50) PRIMARY KEY NOT NULL,
+    academician_bank_name VARCHAR(100) NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
