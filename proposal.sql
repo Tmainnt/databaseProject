@@ -14,12 +14,12 @@ CREATE TABLE proposal (
         'REJECTED',
         'REVISED',
         'WITHDRAWN'
-    ) DEFAULT = 'DRAFT',
+    ) DEFAULT 'DRAFT',
     proposal_budget DECIMAL(15,2) NOT NULL,
     proposal_start_date DATE NOT NULL,
     proposal_end_date DATE NOT NULL,
-    created_timestamp TIMESTAMP NOT NULL,
-    update_timestamp TIMESTAMP NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (fk_project_id) REFERENCES project(project_id) ON DELETE CASCADE
 );
 
