@@ -1,8 +1,8 @@
-SOURCE outsourcer.sql
+SOURCE outsourcer.sql;
 
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
-    project_id SERIAL PRIMARY KEY,
+    project_id INT AUTO_INCREMENT PRIMARY KEY,
     project_name VARCHAR(50) NOT NULL,
     project_status ENUM(
         'DRAFT',
@@ -20,8 +20,8 @@ CREATE TABLE project (
         'EHIA',
         'COP'
     ),
-    created_timestamp TIMESTAMP NOT NULL,
-    update_timestamp TIMESTAMP NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     outsourcer_contract_email VARCHAR(50) UNIQUE,
-    FOREIGN KEY (outsourcer_contract_email) REFERENCES outsourcer(outsourcer_contract_email),
+    FOREIGN KEY (outsourcer_contract_email) REFERENCES outsourcer(outsourcer_contract_email) ON DELETE CASCADE
 );
