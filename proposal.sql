@@ -2,7 +2,7 @@ SOURCE project.sql;
 
 DROP TABLE IF EXISTS proposal;
 CREATE TABLE proposal (
-    proposal_id SERIAL PRIMARY KEY,
+    proposal_id INT AUTO_INCREMENT PRIMARY KEY,
     fk_project_id INT NOT NULL UNIQUE,
     proposal_number VARCHAR(50) NOT NULL,
     proposal_date DATE NOT NULL,
