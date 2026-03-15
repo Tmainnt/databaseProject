@@ -12,15 +12,15 @@ CREATE TABLE academician (
     academician_salary_per_month DECIMAL(10,2) NOT NULL,
     notes TEXT,
     fk_academician_contact_id INT AUTO_INCREMENT NOT NULL,
-    fk_academician_critizen_id INT(20) NOT NULL UNIQUE,
-    fk_academician_contract_number INT(20) NOT NULL,
+    fk_academician_citizen_id INT(20) NOT NULL UNIQUE,
+    fk_academician_contract_number VARCHAR(10) NOT NULL,
     fk_academician_bank_account VARCHAR(50) NOT NULL,
     academician_file_storage_id INT AUTO_INCREMENT NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (fk_academician_contact_id) REFERENCES academician_contact(academician_contact_id) ON DELETE CASCADE,
     FOREIGN KEY (fk_academician_contract_number) REFERENCES academician_contact(academician_contract_number) ON DELETE CASCADE,
-    FOREIGN KEY (fk_academician_critizen_id) REFERENCES academician_critizen_card(academician_critizen_id) ON DELETE CASCADE,
+    FOREIGN KEY (fk_academician_citizen_id) REFERENCES academician_citizen_card(academician_citizen_id) ON DELETE CASCADE,
     FOREIGN KEY (fk_academician_bank_account) REFERENCES academician_bank_account(academician_bank_account) ON DELETE CASCADE
 ); 
 
@@ -47,7 +47,7 @@ CREATE TABLE academician_emergency_contact (
 
 DROP TABLE IF EXISTS academician_file;
 CREATE TABLE academician_file (
-    academician_file_storage_id INT AUTO_INCREMENT NOT NULL,
+    academician_file_storage_id INT AUTO_INCREMENT PRIMARY KEY,
     academician_cv_file VARCHAR(100) NOT NULL,
     academician_transcript_card_file VARCHAR(100) NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE academician_file (
 DROP TABLE IF EXISTS academician_has_a_contract;
 CREATE TABLE academician_has_a_contract (
     fk_academician_id INT AUTO_INCREMENT NOT NULL,
-    fk_academician_contract_number INT(20) NOT NULL,
+    fk_academician_contract_number VARCHAR(10) NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
@@ -70,19 +70,21 @@ CREATE TABLE academician_work_limit (
     fk_academician_id INT AUTO_INCREMENT NOT NULL,
     academician_work_limit INT NOT NULL CHECK academician_work_limit >= 0 AND academician_work_limit <= 12,
     default_work_per_day DECIMAL(5,2) CHECK (default_work_per_day >= 0 AND default_work_per_day <= 24),
+    default_work_days_per_month INT CHECK (default_work_days_per_month >= 0 AND default_work_days_per_month <= 31),
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (fk_academician_id) REFERENCES academician(academician_id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS academician_critizen_card;
-CREATE TABLE academician_critizen_card (
-    academician_critizen_id INT(20) PRIMARY KEY NOT NULL,
+DROP TABLE IF EXISTS academician_citizen_card;
+CREATE TABLE academician_citizen_card (
+    academician_citizen_id VARCHAR(20) PRIMARY KEY NOT NULL,
     academician_id_card_file VARCHAR(100) NOT NULL
 );
 
 DROP TABLE IF EXISTS academician_contract;
 CREATE TABLE academician_contract (
-    academician_contract_number INT(20) PRIMARY KEY, -- maybe i'm gonna change data type next time.
+    academician_contract_number VARCHAR(12) PRIMARY KEY NOT NULL,
     academician_contract_type ENUM(
         'FULL_TIME',
         'PART_TIME',
@@ -100,4 +102,14 @@ CREATE TABLE academician_bank_account (
     academician_bank_name VARCHAR(100) NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+);
+
+DROP TABLE IF EXISTS academician_availability_status;
+CREATE TABLE academician_availability_status (
+    fk_academician_id INT AUTO_INCREMENT NOT NULL,
+    fk_assigned_to_id INT AUTO_INCREMENT NOT NULL,
+    academician_availability_status VARCHAR(50) NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (fk_academician_id) REFERENCES academician(academician_id) ON DELETE CASCADE
 );
