@@ -1,7 +1,7 @@
 SOURCE academician.sql
 
-DROP TABLE IF EXISTS assigned_to;
-CREATE TABLE assigned_to (
+DROP TABLE IF EXISTS work_experience;
+CREATE TABLE work_experience (
     work_experience_id INT AUTO_INCREMENT PRIMARY KEY,
     fk_academician_id INT AUTO_INCREMENT NOT NULL,
     fk_specialist_id INT AUTO_INCREMENT NOT NULL,
