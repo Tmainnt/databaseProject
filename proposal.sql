@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS proposal;
 CREATE TABLE proposal (
     proposal_id INT AUTO_INCREMENT PRIMARY KEY,
     fk_project_id INT NOT NULL UNIQUE,
-    proposal_number VARCHAR(50) NOT NULL,
+    proposal_number VARCHAR(10) NOT NULL,
     proposal_date DATE NOT NULL,
     proposal_status ENUM(
         'DRAFT',

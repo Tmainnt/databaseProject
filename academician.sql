@@ -1,20 +1,20 @@
 DROP TABLE IF EXISTS academician;
 CREATE TABLE academician (
     academician_id INT AUTO_INCREMENT PRIMARY KEY,
-    academician_fullname VARCHAR(100) NOT NULL,
+    academician_fullname VARCHAR(50) NOT NULL,
     academician_date_of_birth DATE NOT NULL,
     academician_gender ENUM(
         'MALE', 
         'FEMALE', 
         'OTHER'
     ) NOT NULL,
-    academician_tax_id VARCHAR(50) NOT NULL,
+    academician_tax_id VARCHAR(13) NOT NULL,
     academician_salary_per_month DECIMAL(10,2) NOT NULL,
     notes TEXT,
     fk_academician_contact_id INT AUTO_INCREMENT NOT NULL,
-    fk_academician_citizen_id INT(20) NOT NULL UNIQUE,
+    fk_academician_citizen_id VARCHAR(13) NOT NULL UNIQUE,
     fk_academician_contract_number VARCHAR(10) NOT NULL,
-    fk_academician_bank_account VARCHAR(50) NOT NULL,
+    fk_academician_bank_account VARCHAR(20) NOT NULL,
     academician_file_storage_id INT AUTO_INCREMENT NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE academician (
 DROP TABLE IF EXISTS academician_contact;
 CREATE TABLE academician_contact (
     academician_contact_id INT AUTO_INCREMENT PRIMARY KEY,
-    academician_email VARCHAR(100) NOT NULL,
+    academician_email VARCHAR(50) NOT NULL,
     academician_phone VARCHAR(10) NOT NULL UNIQUE,
     academician_address TEXT NOT NULL,
     fk_academician_emergency_contact_id INT AUTO_INCREMENT NOT NULL,
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS academician_emergency_contact;
 CREATE TABLE academician_emergency_contact (
     academician_contact_id INT AUTO_INCREMENT PRIMARY KEY,
     academician_emergency_contact_phone VARCHAR(10) NOT NULL UNIQUE,
-    academician_emergency_contact_name VARCHAR(100) NOT NULL,
+    academician_emergency_contact_name VARCHAR(50) NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
@@ -48,8 +48,8 @@ CREATE TABLE academician_emergency_contact (
 DROP TABLE IF EXISTS academician_file;
 CREATE TABLE academician_file (
     academician_file_storage_id INT AUTO_INCREMENT PRIMARY KEY,
-    academician_cv_file VARCHAR(100) NOT NULL,
-    academician_transcript_card_file VARCHAR(100) NOT NULL,
+    academician_cv_file BLOB NOT NULL,
+    academician_transcript_card_file BLOB NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL 
 );
@@ -78,8 +78,8 @@ CREATE TABLE academician_work_limit (
 
 DROP TABLE IF EXISTS academician_citizen_card;
 CREATE TABLE academician_citizen_card (
-    academician_citizen_id VARCHAR(20) PRIMARY KEY NOT NULL,
-    academician_id_card_file VARCHAR(100) NOT NULL
+    academician_citizen_id VARCHAR(13) PRIMARY KEY NOT NULL,
+    academician_id_card_file BLOB NOT NULL
 );
 
 DROP TABLE IF EXISTS academician_contract;
@@ -105,10 +105,13 @@ CREATE TABLE academician_bank_account (
 );
 
 DROP TABLE IF EXISTS academician_availability_status;
+
 CREATE TABLE academician_availability_status (
     fk_academician_id INT AUTO_INCREMENT NOT NULL,
     fk_assigned_to_id INT AUTO_INCREMENT NOT NULL,
-    academician_availability_status VARCHAR(50) NOT NULL,
+    academician_availability_status ENUM(
+        'พร้อม',
+        'ไม่พร้อม') NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (fk_academician_id) REFERENCES academician(academician_id) ON DELETE CASCADE
